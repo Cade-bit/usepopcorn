@@ -62,6 +62,13 @@ export default function App() {
       </Navbar>
 
       <Main>
+        {/*<DisplayBox element={<MovieListContent movies={movies} />} />
+        <DisplayBox element={
+          <>
+          <WatchedSummaryHeader watched={watched} />
+          <WatchedSummaryContent watched={watched} />
+          </>
+           } /> */}
 
         <DisplayBox>
           <MovieListContent movies={movies} />
@@ -70,7 +77,7 @@ export default function App() {
         <DisplayBox>
           <WatchedSummaryHeader watched={watched} />
           <WatchedSummaryContent watched={watched} />
-        </DisplayBox>
+        </DisplayBox> 
 
       </Main>
     </>
