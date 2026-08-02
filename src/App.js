@@ -55,12 +55,33 @@ const KEY = '8c88f8bc';
 export default function App() {
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const query = "dgwgweg";
 
   useEffect(function() {
-    fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=transformers`)
-    .then((res) => res.json())
-    .then((data) => setMovies(data.Search));
+    async function fetchMovies() {
+      try {setIsLoading(true);
+    const res = await fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=${query}`);
+
+    if(!res.ok) throw new Error("Something went wrong with fetching movies");
+
+
+    const data = await res.json();
+    if (data.Response === 'False') throw new Error("Movie not found");
+    setMovies(data.Search)
+  } catch(err) {
+      console.error(err.message);
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+  fetchMovies();
   }, []);
+
+
+
 
   return (
     <>
@@ -80,7 +101,9 @@ export default function App() {
            } /> */}
 
         <DisplayBox>
-          <MovieListContent movies={movies} />
+          {isLoading && <Loader />}
+          {!isLoading && !error && <MovieListContent movies={movies}/>}
+          {error && <ErrorMessage message={error}/>}
         </DisplayBox>
 
         <DisplayBox>
@@ -91,6 +114,14 @@ export default function App() {
       </Main>
     </>
   );
+}
+
+function Loader() {
+  return <p className='loader'>Loading...</p>
+}
+
+function ErrorMessage({ message}) {
+  return <p className='error'><span>⛔</span>{message}</p>
 }
 
 function Navbar({ children }) {
