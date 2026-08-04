@@ -29,14 +29,14 @@ export default function StarRating({
   className = "", 
   messages = [],
   defaultRating = 0,
-  onSetRating,
+  onSetRating = () => {},
 }) {
   const [rating, setRating] = React.useState(defaultRating);
   const [tempRating, setTempRating] = React.useState(0);
 
-  function handleRating(rate) {
-    setRating(rate);
-    onSetRating(rate);
+  function handleRating(rating) {
+    setRating(rating);
+    onSetRating(rating);
   }
 
   const textStyle = {
